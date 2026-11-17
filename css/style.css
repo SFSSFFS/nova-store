@@ -1,0 +1,348 @@
+
+/* =================================
+   NOVA STORE — DESIGN SYSTEM
+   Luxury Minimalism
+================================= */
+
+/* 1. Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap');
+
+/* 2. Global Variables */
+:root {
+    --color-black: #171717;
+    --color-ivory: #F7F5F0;
+    --color-beige: #D8CBB8;
+    --color-white: #FFFFFF;
+    --color-gray: #77736D;
+
+    --font-heading: 'Playfair Display', Georgia, serif;
+    --font-body: 'DM Sans', Arial, sans-serif;
+
+    --container-width: 1200px;
+}
+
+/* 3. Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    background-color: var(--color-ivory);
+    color: var(--color-black);
+    font-family: var(--font-body);
+    line-height: 1.6;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+/* 4. Announcement Bar */
+.announcement-bar {
+    background-color: var(--color-black);
+    color: var(--color-white);
+    text-align: center;
+    padding: 10px 15px;
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+}
+
+/* 5. Header */
+.header {
+    min-height: 85px;
+    padding: 0 7%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.logo {
+    font-family: var(--font-heading);
+    font-size: 30px;
+    font-weight: 600;
+    letter-spacing: 2px;
+}
+
+.logo span {
+    color: #A68B67;
+}
+
+.nav {
+    display: flex;
+    align-items: center;
+    gap: 38px;
+}
+
+.nav a,
+.cart-link {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    transition: color 0.3s ease;
+}
+
+.nav a:hover,
+.cart-link:hover {
+    color: #A68B67;
+}
+
+/* 6. Hero Section */
+.hero {
+    min-height: 620px;
+    display: flex;
+    align-items: center;
+    padding: 80px 10%;
+    position: relative;
+    overflow: hidden;
+
+background:
+    linear-gradient(
+        90deg,
+        rgba(20, 18, 16, 0.78) 0%,
+        rgba(20, 18, 16, 0.35) 55%,
+        rgba(20, 18, 16, 0.05) 100%
+    ),
+    url("https://images.unsplash.com/photo-1539109136881-3be0616acf4b?auto=format&fit=crop&w=2000&q=90")
+    center 10% / cover no-repeat;
+
+}
+
+.hero-content {
+    max-width: 600px;
+    color: var(--color-white);
+    position: relative;
+    z-index: 1;
+}
+
+.eyebrow {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 3px;
+    margin-bottom: 22px;
+}
+
+.hero h1 {
+    font-family: var(--font-heading);
+    font-size: clamp(55px, 7vw, 88px);
+    line-height: 1.08;
+    font-weight: 400;
+    margin-bottom: 25px;
+}
+
+.hero-description {
+    max-width: 390px;
+    font-size: 14px;
+    line-height: 1.9;
+    color: rgba(255, 255, 255, 0.85);
+    margin-bottom: 35px;
+}
+
+/* 7. Main Button */
+.hero-button {
+    display: inline-block;
+    background-color: var(--color-ivory);
+    color: var(--color-black);
+    padding: 17px 30px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    transition: all 0.3s ease;
+}
+
+.hero-button:hover {
+    background-color: var(--color-black);
+    color: var(--color-white);
+    transform: translateY(-3px);
+}
+
+/* 8. Categories Section */
+.categories {
+    max-width: var(--container-width);
+    margin: auto;
+    padding: 100px 30px;
+}
+
+.section-heading {
+    text-align: center;
+    margin-bottom: 45px;
+}
+
+.section-heading .eyebrow {
+    color: var(--color-gray);
+    margin-bottom: 12px;
+}
+
+.section-heading h2 {
+    font-family: var(--font-heading);
+    font-size: 42px;
+    font-weight: 400;
+}
+
+.category-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 22px;
+}
+
+.category-card {
+    min-height: 300px;
+    display: flex;
+    align-items: flex-end;
+    padding: 25px;
+    color: var(--color-white);
+    background-color: #B8AA97;
+    transition: transform 0.3s ease;
+}
+
+
+
+.category-card:nth-child(1) {
+    background:
+        linear-gradient(to top, rgba(0,0,0,0.55), transparent 65%),
+        url("https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&w=900&q=85") center/cover;
+}
+
+.category-card:nth-child(2) {
+    background:
+        linear-gradient(to top, rgba(0,0,0,0.45), transparent 65%),
+        url("https://img01.ztat.net/article/spp-media-p1/33c3a2f26a5343a78465a07e133135b4/10f2d39bfdff49d692682a9141459bed.jpg?imwidth=762") center/cover;
+}
+
+.category-card:nth-child(3) {
+    background:
+        linear-gradient(to top, rgba(0,0,0,0.35), transparent 65%),
+        url("https://cdn.shopify.com/s/files/1/0759/0094/4716/files/The_Old_Money_Girl_s_Guide_to_Timeless_Accessories_20250506_131257_0000.png?v=1746526667") center/cover;
+}
+
+
+
+.category-card:hover {
+    transform: translateY(-6px);
+}
+
+.category-card span {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 2px;
+}
+
+/* 9. Footer */
+.footer {
+    background-color: var(--color-black);
+    color: var(--color-white);
+    text-align: center;
+    padding: 55px 20px;
+}
+
+.footer .logo {
+    display: inline-block;
+    margin-bottom: 15px;
+}
+
+.footer p {
+    color: #B8B4AE;
+    font-size: 12px;
+    margin-top: 8px;
+}
+
+/* =================================
+   FEATURED PRODUCTS
+================================= */
+
+.featured-products {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 90px 30px 110px;
+}
+
+.featured-products .section-heading {
+    margin-bottom: 50px;
+}
+
+.featured-products .section-heading > p:last-child {
+    color: var(--color-gray);
+    font-size: 13px;
+    margin-top: 12px;
+}
+
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+}
+
+.product-card {
+    min-width: 0;
+    overflow: hidden;
+}
+
+.product-card > a {
+    display: block;
+    overflow: hidden;
+    background-color: #EAE5DC;
+}
+
+.product-card img {
+    display: block;
+    width: 100%;
+    height: 340px;
+    object-fit: cover;
+    transition: transform 0.6s ease;
+}
+
+.product-card:hover img {
+    transform: scale(1.05);
+}
+
+.product-info {
+    padding: 18px 2px;
+}
+
+.product-info h3 {
+    font-family: var(--font-heading);
+    font-size: 18px;
+    font-weight: 500;
+    margin-bottom: 5px;
+}
+
+.product-info p {
+    color: var(--color-gray);
+    font-size: 11px;
+    letter-spacing: 0.5px;
+    margin-bottom: 12px;
+}
+
+.product-info span {
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.view-all {
+    text-align: center;
+    margin-top: 45px;
+}
+
+.view-all a {
+    display: inline-block;
+    border: 1px solid var(--color-black);
+    padding: 16px 35px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    transition: all 0.3s ease;
+}
+
+.view-all a:hover {
+    background-color: var(--color-black);
+    color: var(--color-white);
+}

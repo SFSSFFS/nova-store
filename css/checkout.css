@@ -1,0 +1,252 @@
+
+/* =================================
+   NOVA STORE - CHECKOUT PAGE
+================================= */
+
+.checkout-page {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 65px 5%;
+    min-height: 70vh;
+}
+
+/* HEADING */
+
+.checkout-heading {
+    margin-bottom: 45px;
+    padding-bottom: 25px;
+    border-bottom: 1px solid #e8e5e1;
+}
+
+.checkout-heading h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 38px;
+    font-weight: 400;
+    margin-bottom: 10px;
+}
+
+.checkout-heading p {
+    color: #888;
+    font-size: 13px;
+}
+
+/* MAIN LAYOUT */
+
+.checkout-container {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+    gap: 70px;
+    align-items: start;
+}
+
+/* FORM SECTION */
+
+.checkout-form-section h2,
+.checkout-summary h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 23px;
+    font-weight: 400;
+    margin-bottom: 25px;
+}
+
+.checkout-form-section h2:not(:first-child) {
+    margin-top: 40px;
+}
+
+/* FORM GROUPS */
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+    margin-bottom: 22px;
+}
+
+.form-group label {
+    font-size: 12px;
+    color: #555;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 15px;
+    border: 1px solid #e0dbd4;
+    background: #fff;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    outline: none;
+    transition: border 0.3s ease;
+}
+
+.form-group input:focus {
+    border-color: #9b8063;
+}
+
+.form-group input::placeholder {
+    color: #aaa;
+}
+
+/* TWO COLUMN INPUTS */
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+}
+
+/* DELIVERY OPTIONS */
+
+.delivery-option {
+    padding: 20px;
+    margin-bottom: 12px;
+    border: 1px solid #e0dbd4;
+    transition: border 0.3s ease;
+}
+
+.delivery-option:has(input:checked) {
+    border-color: #9b8063;
+    background: #faf8f5;
+}
+
+.delivery-option label {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 13px;
+    cursor: pointer;
+}
+
+.delivery-option input {
+    accent-color: #9b8063;
+}
+
+.delivery-option span {
+    margin-left: auto;
+    font-weight: 600;
+    color: #171717;
+}
+
+/* PLACE ORDER BUTTON */
+
+#checkout-form .checkout-btn {
+    margin-top: 35px;
+}
+
+/* ORDER SUMMARY */
+
+.checkout-summary {
+    padding: 30px;
+    background: #f8f6f3;
+}
+
+.checkout-summary h2 {
+    padding-bottom: 20px;
+    border-bottom: 1px solid #e3ded7;
+}
+
+/* CHECKOUT ITEMS */
+
+.checkout-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 15px 0;
+    border-bottom: 1px solid #e8e3dc;
+}
+
+.checkout-item img {
+    width: 65px;
+    height: 75px;
+    object-fit: cover;
+    background: #eee9e3;
+}
+
+.checkout-item-info {
+    flex: 1;
+}
+
+.checkout-item-info h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 15px;
+    font-weight: 400;
+    margin-bottom: 7px;
+}
+
+.checkout-item-info p {
+    font-size: 11px;
+    color: #888;
+    margin-bottom: 5px;
+}
+
+.checkout-item-price {
+    font-size: 13px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+/* TOTALS */
+
+.checkout-total-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px 0;
+    font-size: 13px;
+    color: #777;
+}
+
+.checkout-grand-total {
+    display: flex;
+    justify-content: space-between;
+    padding-top: 18px;
+    margin-top: 10px;
+    border-top: 1px solid #ded8d0;
+    font-size: 16px;
+    font-weight: 600;
+    color: #171717;
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 768px) {
+
+    .checkout-page {
+        padding: 45px 5%;
+    }
+
+    .checkout-heading h1 {
+        font-size: 31px;
+    }
+
+    .checkout-container {
+        grid-template-columns: 1fr;
+        gap: 45px;
+    }
+
+    .checkout-summary {
+        padding: 22px;
+    }
+
+}
+
+@media (max-width: 450px) {
+
+    .form-row {
+        grid-template-columns: 1fr;
+        gap: 0;
+    }
+
+    .checkout-form-section h2,
+    .checkout-summary h2 {
+        font-size: 21px;
+    }
+
+    .checkout-summary {
+        padding: 18px;
+    }
+
+    .checkout-item img {
+        width: 55px;
+        height: 65px;
+    }
+
+}
