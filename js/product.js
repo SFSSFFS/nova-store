@@ -1,145 +1,77 @@
+// Product page
+(function () {
 
-// GET PRODUCT ID FROM URL
-const urlParams = new URLSearchParams(window.location.search);
-const productId = Number(urlParams.get("id"));
+    var SIZES = ["S", "M", "L", "XL"];
+    var COLORS = ["Black", "Brown", "Gold", "Silver"];
 
-// FIND THE SELECTED PRODUCT
-const selectedProduct = products.find(
-    product => product.id === productId
-);
+    var container = document.getElementById("product-details");
+    var params = new URLSearchParams(window.location.search);
+    var product = getProduct(params.get("id"));
 
-// GET PRODUCT DETAILS CONTAINER
-const productDetails = document.getElementById("product-details");
-
-// DISPLAY PRODUCT
-function displayProduct() {
-
-    if (!selectedProduct) {
-        productDetails.innerHTML = `
-            <div class="product-not-found">
-                <h2>Product Not Found</h2>
-                <p>Sorry, this product does not exist.</p>
-                <a href="shop.html">Return to Shop</a>
-            </div>
-        `;
-        return;
+    function notFound() {
+        document.title = t("product.notfound") + " | NOVA STORE";
+        container.innerHTML =
+            '<div class="no-products"><h2>' + esc(t("product.notfound")) + "</h2><p>" +
+            esc(t("product.notfound.text")) + '</p><p><a class="about-link" href="shop.html">' +
+            esc(t("product.back")) + "</a></p></div>";
     }
 
-    productDetails.innerHTML = `
-        <div class="product-gallery">
-            <img 
-                src="${selectedProduct.image}" 
-                alt="${selectedProduct.name}"
-                class="product-main-image"
-            >
-        </div>
+    if (!product) { notFound(); return; }
 
-        <div class="product-info">
+    var name = productText(product, "name");
+    document.title = name + " | NOVA STORE";
 
-            <p class="product-category">
-                ${selectedProduct.category}
-            </p>
+    var crumb = document.getElementById("breadcrumb-name");
+    if (crumb) crumb.textContent = name;
 
-            <h1>${selectedProduct.name}</h1>
+    var sizeOptions = SIZES.map(function (s) {
+        return '<option value="' + s + '">' + esc(s + " — " + t("size." + s)) + "</option>";
+    }).join("");
 
-            <p class="product-price">
-                $${selectedProduct.price}
-            </p>
+    var colorOptions = COLORS.map(function (c) {
+        return '<option value="' + c + '">' + esc(t("color." + c)) + "</option>";
+    }).join("");
 
-            <p class="product-description">
-                ${selectedProduct.description}
-            </p>
+    var qtyOptions = "";
+    for (var q = 1; q <= MAX_QTY; q++) qtyOptions += '<option value="' + q + '">' + q + "</option>";
 
-           
-${["women", "men"].includes(selectedProduct.category.toLowerCase()) ? `
-   
+    container.innerHTML =
+        '<div class="product-gallery">' +
+            '<img class="product-main-image" src="' + esc(product.image) + '" alt="' + esc(name) + '">' +
+        "</div>" +
+        '<div class="product-info">' +
+            '<p class="product-category">' + esc(t("cat." + product.category)) + "</p>" +
+            "<h1>" + esc(name) + "</h1>" +
+            '<p class="product-price">' + formatPrice(product.price) + "</p>" +
+            '<p class="product-description">' + esc(productText(product, "description")) + "</p>" +
 
+            '<div class="product-option"><label for="size">' + esc(t("opt.size")) + "</label>" +
+                '<select id="size"><option value="">' + esc(t("opt.size.choose")) + "</option>" + sizeOptions + "</select></div>" +
 
-    <div class="product-option">
-        <label for="product-size">Select Size</label>
+            '<div class="product-option"><label for="color">' + esc(t("opt.color")) + "</label>" +
+                '<select id="color"><option value="">' + esc(t("opt.color.choose")) + "</option>" + colorOptions + "</select></div>" +
 
-        <select id="product-size">
-            <option value="">Choose a size</option>
-            <option value="S">Small</option>
-            <option value="M">Medium</option>
-            <option value="L">Large</option>
-            <option value="XL">Extra Large</option>
-        </select>
-    </div>
+            '<div class="product-option"><label for="quantity">' + esc(t("opt.qty")) + "</label>" +
+                '<select id="quantity">' + qtyOptions + "</select></div>" +
 
-` : ""}
+            '<button type="button" class="add-to-cart-btn" id="add-to-cart">' + esc(t("btn.add")) + "</button>" +
 
-${selectedProduct.category.toLowerCase() === "accessories" ? `
-    <div class="product-option">
-        <label for="product-color">Select Color</label>
+            '<div class="product-extra">' +
+                esc(t("product.extra1", { amount: formatPrice(NOVA_CONFIG.freeShippingThreshold) })) + "<br>" +
+                esc(t("product.extra2")) +
+            "</div>" +
+        "</div>";
 
-        <select id="product-color">
-            <option value="">Choose a color</option>
-            <option value="Black">Black</option>
-            <option value="Brown">Brown</option>
-            <option value="Gold">Gold</option>
-            <option value="Silver">Silver</option>
-        </select>
-    </div>
-` : ""}
+    document.getElementById("add-to-cart").addEventListener("click", function () {
+        var size = document.getElementById("size").value;
+        var color = document.getElementById("color").value;
+        var quantity = parseInt(document.getElementById("quantity").value, 10);
 
-            <div class="product-option">
-                <label for="product-quantity">Quantity</label>
+        if (!size) { showToast(t("toast.size"), "error"); return; }
+        if (!color) { showToast(t("toast.color"), "error"); return; }
 
-
-                <select id="product-quantity">
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                </select>
-            </div>
-
-          
-<button class="add-to-cart-btn" id="add-to-cart-btn">
-    Add to Cart
-</button>
-
-
-            <div class="product-extra">
-                <p>Complimentary shipping on orders over $150.</p>
-                <p>Designed for timeless elegance.</p>
-            </div>
-
-        </div>
-    `;
-}
-
-// RUN FUNCTION
-displayProduct();
-
-// ADD PRODUCT TO CART BUTTON
-
-const addToCartButton = document.getElementById("add-to-cart-btn");
-
-if (addToCartButton) {
-    addToCartButton.addEventListener("click", () => {
-
-        const sizeElement = document.getElementById("product-size");
-        const colorElement = document.getElementById("product-color");
-        const quantityElement = document.getElementById("product-quantity");
-
-        const size = sizeElement ? sizeElement.value : "";
-        const color = colorElement ? colorElement.value : "";
-        const quantity = Number(quantityElement.value);
-
-        if (sizeElement && !size) {
-            alert("Please select a size.");
-            return;
-        }
-
-        if (colorElement && !color) {
-            alert("Please select a color.");
-            return;
-        }
-
-        addToCart(selectedProduct, size, color, quantity);
-
-        updateCartCount();
+        addToCart(product, size, color, quantity);
+        showToast(t("toast.added"));
     });
-}
+
+})();

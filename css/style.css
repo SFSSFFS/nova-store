@@ -215,13 +215,13 @@ background:
 .category-card:nth-child(2) {
     background:
         linear-gradient(to top, rgba(0,0,0,0.45), transparent 65%),
-        url("https://img01.ztat.net/article/spp-media-p1/33c3a2f26a5343a78465a07e133135b4/10f2d39bfdff49d692682a9141459bed.jpg?imwidth=762") center/cover;
+        url("https://images.unsplash.com/photo-1617137968427-85924c800a22?auto=format&fit=crop&w=900&q=85") center/cover;
 }
 
 .category-card:nth-child(3) {
     background:
         linear-gradient(to top, rgba(0,0,0,0.35), transparent 65%),
-        url("https://cdn.shopify.com/s/files/1/0759/0094/4716/files/The_Old_Money_Girl_s_Guide_to_Timeless_Accessories_20250506_131257_0000.png?v=1746526667") center/cover;
+        url("https://images.unsplash.com/photo-1548036328-c9fa89d128fa?auto=format&fit=crop&w=900&q=85") center/cover;
 }
 
 
@@ -345,4 +345,167 @@ background:
 .view-all a:hover {
     background-color: var(--color-black);
     color: var(--color-white);
+}
+
+/* =================================
+   NOVA STORE — TOAST NOTIFICATIONS
+================================= */
+
+.nova-toast {
+    position: fixed;
+    top: 25px;
+    right: 25px;
+    z-index: 99999;
+
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    background: #171717;
+    color: #ffffff;
+
+    padding: 16px 24px;
+    min-width: 260px;
+
+    font-family: var(--font-body);
+    font-size: 13px;
+    letter-spacing: 0.4px;
+
+    border-left: 3px solid #B49A7A;
+
+    opacity: 0;
+    transform: translateY(-15px);
+
+    transition: all 0.4s ease;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+}
+
+.nova-toast.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.nova-toast-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 24px;
+    height: 24px;
+
+    border: 1px solid #B49A7A;
+    border-radius: 50%;
+
+    color: #B49A7A;
+    font-size: 13px;
+}
+
+.nova-toast-message {
+    line-height: 1.5;
+}
+
+/* Error Notification */
+
+.nova-toast.error {
+    border-left-color: #C77B65;
+}
+
+.nova-toast.error .nova-toast-icon {
+    color: #C77B65;
+    border-color: #C77B65;
+}
+
+/* Mobile Responsive */
+
+@media (max-width: 480px) {
+    .nova-toast {
+        top: 15px;
+        right: 15px;
+        left: 15px;
+        min-width: unset;
+        padding: 14px 18px;
+    }
+}
+
+
+/* =================================
+   SHARED COMPONENTS
+   (header, footer, accessibility)
+================================= */
+
+.skip-link {
+    position: absolute;
+    left: -9999px;
+    top: 0;
+    z-index: 100000;
+    padding: 12px 18px;
+    background: var(--color-black);
+    color: var(--color-white);
+    font-size: 12px;
+}
+
+.skip-link:focus {
+    left: 10px;
+    top: 10px;
+}
+
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 22px;
+}
+
+.nav a.active {
+    color: #A68B67;
+}
+
+.lang-switch {
+    background: transparent;
+    border: 1px solid #D6D0C6;
+    border-radius: 0;
+    padding: 6px 8px;
+    font-family: var(--font-body);
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--color-black);
+    cursor: pointer;
+}
+
+.footer-links {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px 28px;
+    margin: 22px 0 14px;
+}
+
+.footer-links a {
+    color: #D8D3CB;
+    font-size: 11px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    transition: color 0.3s ease;
+}
+
+.footer-links a:hover {
+    color: #A68B67;
+}
+
+.footer-payments {
+    max-width: 520px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.footer-rights {
+    margin-top: 18px;
+}
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+    outline: 2px solid #A68B67;
+    outline-offset: 2px;
 }

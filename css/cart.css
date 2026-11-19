@@ -283,3 +283,30 @@
         gap: 10px;
     }
 }
+
+
+/* DELIVERY NOTE + WHATSAPP */
+
+.cart-note {
+    margin: -10px 0 20px;
+    color: #888;
+    font-size: 12px;
+}
+
+.whatsapp-btn {
+    display: block;
+    margin-top: 12px;
+    padding: 16px;
+    border: 1px solid #171717;
+    color: #171717;
+    text-align: center;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    transition: all 0.3s ease;
+}
+
+.whatsapp-btn:hover {
+    background: #171717;
+    color: #fff;
+}

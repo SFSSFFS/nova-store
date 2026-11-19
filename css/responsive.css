@@ -291,3 +291,15 @@
         font-size: 18px;
     }
 }
+
+
+/* Shared header on small screens */
+@media (max-width: 600px) {
+    .header-actions {
+        gap: 14px;
+    }
+
+    .footer-links {
+        gap: 8px 20px;
+    }
+}

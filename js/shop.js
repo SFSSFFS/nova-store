@@ -1,110 +1,51 @@
+// Shop page: search, category filter and sorting
+(function () {
 
-// =================================
-// NOVA STORE — SHOP FUNCTIONALITY
-// =================================
+    var grid = document.getElementById("shop-grid");
+    var results = document.getElementById("shop-results");
+    var search = document.getElementById("shop-search");
+    var category = document.getElementById("shop-category");
+    var sort = document.getElementById("shop-sort");
 
-const productGrid = document.getElementById("shop-product-grid");
-const searchInput = document.getElementById("product-search");
-const categoryFilter = document.getElementById("category-filter");
-const sortSelect = document.getElementById("sort-products");
-const resultsText = document.querySelector(".shop-results");
-
-// Display products
-function displayProducts(items) {
-
-    if (items.length === 0) {
-        productGrid.innerHTML = `
-            <div class="no-products">
-                <h2>No products found</h2>
-                <p>Try another search or category.</p>
-            </div>
-        `;
-
-        resultsText.textContent = "No products found";
-        return;
+    // Allow links like shop.html?category=women
+    var requested = new URLSearchParams(window.location.search).get("category");
+    if (requested && category.querySelector('option[value="' + requested + '"]')) {
+        category.value = requested;
     }
 
-    resultsText.textContent = `Showing ${items.length} products`;
+    function render() {
+        var term = search.value.trim().toLowerCase();
 
-    productGrid.innerHTML = items.map(product => `
-        <article class="product-card">
+        var list = products.filter(function (p) {
+            var matchesCategory = category.value === "all" || p.category === category.value;
+            var haystack = (productText(p, "name") + " " + productText(p, "description")).toLowerCase();
+            return matchesCategory && (!term || haystack.indexOf(term) !== -1);
+        });
 
-            <a href="product.html?id=${product.id}">
-                <img
-                    src="${product.image}"
-                    alt="${product.name}"
-                    loading="lazy"
-                >
-            </a>
+        if (sort.value === "low") list.sort(function (a, b) { return a.price - b.price; });
+        if (sort.value === "high") list.sort(function (a, b) { return b.price - a.price; });
+        if (sort.value === "name") {
+            list.sort(function (a, b) { return productText(a, "name").localeCompare(productText(b, "name")); });
+        }
 
-            <div class="product-info">
-                <h3>
-                    <a href="product.html?id=${product.id}">
-                        ${product.name}
-                    </a>
-                </h3>
+        results.textContent = list.length === 1
+            ? t("shop.results.one")
+            : t("shop.results", { count: list.length });
 
-                <p>${product.category}</p>
+        if (!list.length) {
+            grid.innerHTML =
+                '<div class="no-products"><h2>' + esc(t("shop.none.title")) + "</h2><p>" +
+                esc(t("shop.none.text")) + "</p></div>";
+            return;
+        }
 
-                <span>$${product.price.toFixed(2)}</span>
-            </div>
-
-        </article>
-    `).join("");
-}
-
-
-// Search, filter and sort
-function updateProducts() {
-
-    let filteredProducts = [...products];
-
-    // Search
-    const searchTerm = searchInput.value.toLowerCase().trim();
-
-    if (searchTerm) {
-        filteredProducts = filteredProducts.filter(product =>
-            product.name.toLowerCase().includes(searchTerm)
-        );
+        grid.innerHTML = list.map(productCardHTML).join("");
     }
 
-    // Category filter
-    const selectedCategory = categoryFilter.value;
+    search.addEventListener("input", render);
+    category.addEventListener("change", render);
+    sort.addEventListener("change", render);
 
-    if (selectedCategory !== "all") {
-        filteredProducts = filteredProducts.filter(product =>
-            product.category === selectedCategory
-        );
-    }
+    render();
 
-    // Sorting
-    const sortValue = sortSelect.value;
-
-    if (sortValue === "low-high") {
-        filteredProducts.sort((a, b) => a.price - b.price);
-    }
-
-    else if (sortValue === "high-low") {
-        filteredProducts.sort((a, b) => b.price - a.price);
-    }
-
-    else if (sortValue === "name") {
-        filteredProducts.sort((a, b) =>
-            a.name.localeCompare(b.name)
-        );
-    }
-
-    displayProducts(filteredProducts);
-}
-
-
-// Event listeners
-searchInput.addEventListener("input", updateProducts);
-
-categoryFilter.addEventListener("change", updateProducts);
-
-sortSelect.addEventListener("change", updateProducts);
-
-
-// Initial display
-displayProducts(products);
+})();

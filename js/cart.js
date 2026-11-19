@@ -1,130 +1,97 @@
+// Cart page
+(function () {
 
-// NOVA STORE - CART PAGE
+    var container = document.getElementById("cart-container");
 
-document.addEventListener("DOMContentLoaded", () => {
-    const cartContainer = document.getElementById("cart-container");
+    function whatsappLink(lines, subtotal) {
+        var rows = lines.map(function (line) {
+            return "• " + productText(line.product, "name") +
+                " (" + line.size + ", " + t("color." + line.color) + ") x" + line.quantity +
+                " — " + formatPrice(line.lineTotal);
+        });
 
-    // GET CART ITEMS
-    function renderCart() {
-        const cart = getCart();
+        var message = t("wa.intro") + "\n" + rows.join("\n") + "\n" +
+            t("wa.total") + ": " + formatPrice(subtotal);
 
-        // CHECK IF CART IS EMPTY
-        if (cart.length === 0) {
-            cartContainer.innerHTML = `
-                <div class="empty-cart">
-                    <h2>Your cart is empty</h2>
-                    <p>Looks like you haven't added anything yet.</p>
-                    <a href="shop.html" class="checkout-btn">
-                        Continue Shopping
-                    </a>
-                </div>
-            `;
+        return "https://wa.me/" + NOVA_CONFIG.whatsappNumber + "?text=" + encodeURIComponent(message);
+    }
+
+    function render() {
+        var lines = getCartLines();
+
+        if (!lines.length) {
+            container.innerHTML =
+                '<div class="empty-cart"><h2>' + esc(t("cart.empty.title")) + "</h2><p>" +
+                esc(t("cart.empty.text")) + '</p><a href="shop.html" class="checkout-btn">' +
+                esc(t("cart.continue")) + "</a></div>";
             return;
         }
 
-        // DISPLAY CART ITEMS
-        let cartHTML = `
-            <div class="cart-items">
-        `;
+        var subtotal = lines.reduce(function (sum, l) { return sum + l.lineTotal; }, 0);
 
-        cart.forEach((item, index) => {
-            cartHTML += `
-                <div class="cart-item">
-                    <img
-                        src="${item.image}"
-                        alt="${item.name}"
-                        class="cart-item-image"
-                    >
+        var items = lines.map(function (line) {
+            var name = esc(productText(line.product, "name"));
 
-                    <div class="cart-item-info">
-                        <h3>${item.name}</h3>
-                        <p>$${item.price.toFixed(2)}</p>
+            return '' +
+                '<div class="cart-item">' +
+                    '<a href="product.html?id=' + line.product.id + '">' +
+                        '<img class="cart-item-image" src="' + esc(line.product.image) + '" alt="' + name + '">' +
+                    "</a>" +
+                    '<div class="cart-item-info">' +
+                        "<h3>" + name + "</h3>" +
+                        "<p>" + formatPrice(line.unitPrice) + "</p>" +
+                        "<p>" + esc(t("cart.size")) + ": " + esc(line.size) + "</p>" +
+                        "<p>" + esc(t("cart.color")) + ": " + esc(t("color." + line.color)) + "</p>" +
+                        '<div class="cart-item-actions">' +
+                            "<label>" + esc(t("cart.qty")) +
+                                '<input class="cart-quantity" type="number" min="1" max="' + MAX_QTY + '" ' +
+                                'value="' + line.quantity + '" data-index="' + line.index + '">' +
+                            "</label>" +
+                            '<button type="button" class="remove-item" data-index="' + line.index + '">' +
+                                esc(t("cart.remove")) + "</button>" +
+                        "</div>" +
+                    "</div>" +
+                    '<div class="cart-item-total">' + formatPrice(line.lineTotal) + "</div>" +
+                "</div>";
+        }).join("");
 
-                        ${item.size ? `<p>Size: ${item.size}</p>` : ""}
-                        ${item.color ? `<p>Color: ${item.color}</p>` : ""}
+        var whatsapp = NOVA_CONFIG.whatsappNumber
+            ? '<a class="whatsapp-btn" target="_blank" rel="noopener" href="' +
+              esc(whatsappLink(lines, subtotal)) + '">' + esc(t("cart.whatsapp")) + "</a>"
+            : "";
 
-                        <div class="cart-item-actions">
-                            <label>
-                                Quantity:
-                                <input
-                                    type="number"
-                                    min="1"
-                                    value="${item.quantity}"
-                                    class="cart-quantity"
-                                    data-index="${index}"
-                                >
-                            </label>
-
-                            <button
-                                class="remove-item"
-                                data-index="${index}"
-                            >
-                                Remove
-                            </button>
-                        </div>
-                    </div>
-
-                    <div class="cart-item-total">
-                        $${(item.price * item.quantity).toFixed(2)}
-                    </div>
-                </div>
-            `;
-        });
-
-        cartHTML += `</div>`;
-
-        // CALCULATE TOTAL
-        const total = cart.reduce(
-            (sum, item) => sum + item.price * item.quantity,
-            0
-        );
-
-        cartHTML += `
-            <div class="cart-summary">
-                <h3>Order Summary</h3>
-
-                <div class="cart-total">
-                    <span>Total</span>
-                    <strong>$${total.toFixed(2)}</strong>
-                </div>
-
-                <a href="checkout.html" class="checkout-btn">
-                    Proceed to Checkout
-                </a>
-            </div>
-        `;
-
-        cartContainer.innerHTML = cartHTML;
-
-        // REMOVE ITEMS
-        document.querySelectorAll(".remove-item").forEach(button => {
-            button.addEventListener("click", () => {
-                const index = Number(button.dataset.index);
-                const updatedCart = getCart();
-
-                updatedCart.splice(index, 1);
-                saveCart(updatedCart);
-
-                renderCart();
-                updateCartCount();
-            });
-        });
-
-        // UPDATE QUANTITIES
-        document.querySelectorAll(".cart-quantity").forEach(input => {
-            input.addEventListener("change", () => {
-                const index = Number(input.dataset.index);
-                const updatedCart = getCart();
-                const quantity = Math.max(1, Number(input.value) || 1);
-
-                updatedCart[index].quantity = quantity;
-                saveCart(updatedCart);
-
-                renderCart();
-                updateCartCount();
-            });
-        });
+        container.innerHTML = items +
+            '<div class="cart-summary">' +
+                "<h3>" + esc(t("cart.summary")) + "</h3>" +
+                '<div class="cart-total"><span>' + esc(t("cart.subtotal")) + "</span><strong>" +
+                    formatPrice(subtotal) + "</strong></div>" +
+                '<p class="cart-note">' + esc(t("cart.note")) + "</p>" +
+                '<a href="checkout.html" class="checkout-btn">' + esc(t("cart.checkout")) + "</a>" +
+                whatsapp +
+            "</div>";
     }
 
-    renderCart();
-});
+    container.addEventListener("change", function (event) {
+        if (!event.target.classList.contains("cart-quantity")) return;
+
+        var cart = getCart();
+        var index = Number(event.target.dataset.index);
+        if (!cart[index]) return;
+
+        cart[index].quantity = Math.min(MAX_QTY, Math.max(1, parseInt(event.target.value, 10) || 1));
+        saveCart(cart);
+        render();
+    });
+
+    container.addEventListener("click", function (event) {
+        if (!event.target.classList.contains("remove-item")) return;
+
+        var cart = getCart();
+        cart.splice(Number(event.target.dataset.index), 1);
+        saveCart(cart);
+        render();
+    });
+
+    render();
+
+})();
